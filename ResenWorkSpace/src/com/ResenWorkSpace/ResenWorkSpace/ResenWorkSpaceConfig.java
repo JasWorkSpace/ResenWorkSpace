@@ -29,7 +29,7 @@ public class ResenWorkSpaceConfig {
 		// TODO Auto-generated method stub
 		try {
         	InputStream is = this.getClass().getResourceAsStream(
-        			"/com/Jasworkspace/Jasworkspace/senworkspaceconfig.properties");
+        			"/com/ResenWorkSpace/ResenWorkSpace/resenworkspaceconfig.properties");
         	if(is == null)return;
             props = new Properties();
 			props.load(is);
@@ -41,37 +41,43 @@ public class ResenWorkSpaceConfig {
 	}
     
 	public String getWorkSpace(){
-		String workspace = null;
-		if(LoadOK){
-			workspace = props.getProperty("WorkSpace");
-		}
-		if(workspace == null || "".equals(workspace)){
-			workspace = DefaultWorkSpace;
-		}
-		return workspace;
+		return getString("WORKSPACE",DefaultWorkSpace);
 	}
 	
 	public String getWorkSpaceCompany(){
-		String workspace = null;
-		if(LoadOK){
-			workspace = props.getProperty("WorkSpaceCompany");
-		}
-		if(workspace == null || "".equals(workspace)){
-			workspace = DefaultWorkSpaceCompany;
-		}
-		return workspace;
+		return getString("WORKSPACECOMPANY",DefaultWorkSpaceCompany);
 	}
 	
 	public String getEmail(){
-		String workspace = null;
-		if(LoadOK){
-			workspace = props.getProperty("Email");
-		}
-		if(workspace == null || "".equals(workspace)){
-			workspace = DefaultEmail;
-		}
-		return workspace;
+		return getString("EMAIL",DefaultEmail);
 	}
 	
+	public boolean getDebugEn(){
+		return getBoolean("DEBUG",false);
+	}
+	public boolean getLogEN(){
+		return getBoolean("LOG",false);
+	}
+	//base Interface for prop
+	private String  getString(String KEY,String Default){
+		String workspace = getString(KEY);
+		Log.d("Jas",""+LoadOK+" getString("+KEY+","+Default+") "+workspace);
+		if(workspace == null)return Default;
+		return workspace;
+	}
+	private boolean getBoolean(String KEY,boolean Default){
+		String workspace = getString(KEY);
+		Log.d("Jas",""+LoadOK+" getBoolean("+KEY+","+Default+") "+workspace);
+		if(workspace==null)return Default;
+		if("false".equalsIgnoreCase(workspace))return false;
+		else if("true".equalsIgnoreCase(workspace))return true;
+		return Default;
+	}
+	private String getString(String KEY){
+		if(LoadOK){
+			return props.getProperty(KEY).trim();
+		}
+		return null;
+	}
 	
 }
